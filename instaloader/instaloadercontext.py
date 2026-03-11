@@ -854,7 +854,8 @@ class RateController:
 
         It calls :meth:`RateController.query_waittime` to determine the time needed to wait and then calls
         :meth:`RateController.sleep` to wait until the request can be made."""
-        waittime = self.query_waittime(query_type, time.monotonic(), False)
+        # waittime = self.query_waittime(query_type, time.monotonic(), False)
+        waittime = random.uniform(10, 20)
         assert waittime >= 0
         if waittime > 15:
             formatted_waittime = ("{} seconds".format(round(waittime)) if waittime <= 666 else
