@@ -749,11 +749,17 @@ class RateController:
         self._earliest_next_request_time = 0.0
         self._iphone_earliest_next_request_time = 0.0
 
+    # https://github.com/instaloader/instaloader/issues/944#issuecomment-1065142257
+    # def sleep(self, secs: float):
+    #    """Wait given number of seconds."""
+    #    # Not static, to allow for the behavior of this method to depend on context-inherent properties, such as
+    #    # whether we are logged in.
+    #    time.sleep(secs)
+
     def sleep(self, secs: float):
-        """Wait given number of seconds."""
-        # Not static, to allow for the behavior of this method to depend on context-inherent properties, such as
-        # whether we are logged in.
-        time.sleep(secs)
+        wait_time = random.uniform(10, 20)
+        print(wait_time)
+        time.sleep(wait_time)
 
     def _dump_query_timestamps(self, current_time: float, failed_query_type: str):
         windows = [10, 11, 20, 22, 30, 60]
@@ -855,7 +861,7 @@ class RateController:
                                   "{} minutes".format(round(waittime / 60)))
             self._context.log("\nToo many queries in the last time. Need to wait {}, until {:%H:%M}."
                               .format(formatted_waittime, datetime.now() + timedelta(seconds=waittime)))
-        if waittime > 0:
+        if True:
             self.sleep(waittime)
         if query_type not in self._query_timestamps:
             self._query_timestamps[query_type] = [time.monotonic()]
@@ -881,5 +887,5 @@ class RateController:
             self._context.error("The request will be retried in {}, at {:%H:%M}."
                                 .format(formatted_waittime, datetime.now() + timedelta(seconds=waittime)),
                                 repeat_at_end=False)
-        if waittime > 0:
+        if True:
             self.sleep(waittime)
